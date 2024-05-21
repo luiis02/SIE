@@ -48,8 +48,3 @@ class DatabaseController:
             self.connection.close()
             print("Conexión cerrada correctamente")
 
-
-bd = DatabaseController()
-bd.connect()
-#bd.create_table("usuarios", ["id INTEGER PRIMARY KEY", "nombre TEXT", "email TEXT", "password TEXT"])
-bd.insert_data("usuarios", (1, "Luis", "123", "123"))
