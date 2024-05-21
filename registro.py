@@ -3,5 +3,5 @@ from flask import Blueprint
 registro = Blueprint('registro', __name__)
 
 @registro.route('/registro')
-def otra_ruta():
+def register():
     return 'ESTA SERÍA LA PÁGINA DEL REGISTRO!'
