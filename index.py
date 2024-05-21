@@ -1,25 +1,32 @@
-from flask import Flask, Blueprint, redirect, url_for, request, render_template, send_file, send_from_directory, session
+from flask import Flask, Blueprint, redirect, url_for, request, render_template, send_file, send_from_directory, session, jsonify
 from carrito import carrito
 from catalogo import catalogo
 from bd import DatabaseController
 
 app = Flask(__name__)
 app.register_blueprint(carrito)
+app.secret_key = 'sie'  
 
 @app.route('/')
 def index():
-    return send_from_directory('static', 'index.html')
+    if 'username' in session:
+        print(session['username'])
+        return send_from_directory('static', 'index.html')
+    return redirect(url_for('login'))
 
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    if request.method == 'POST':
+    if request.method == 'POST':        
         bd = DatabaseController()
         bd.connect()
-        if bd.fetch_data("usuarios where email = '%s' and password = '%s'" % (request.form['username'], request.form['password'])):
-            session['username'] = request.form['username']
-            return redirect(url_for('index'))
-    return send_from_directory('static', 'index.html')
+        print (bd.fetch_data("usuarios where email = '%s' and password = '%s'" % (request.get_json().get('username'), request.get_json().get('password'))))
+        if bd.fetch_data("usuarios where email = '%s' and password = '%s'" % (request.get_json().get('username'), request.get_json().get('password'))):
+            session['username'] = request.get_json().get('username')
+            return jsonify({"message": "Login successful", "username": "ok"})
+        else:
+            print("Usuario o contraseña incorrectos")
+    return send_from_directory('static', 'login.html')
 
 
 
