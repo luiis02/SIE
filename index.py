@@ -1,6 +1,8 @@
-from flask import Flask
+from flask import Flask, Blueprint
+from carrito import carrito
 
 app = Flask(__name__)
+app.register_blueprint(carrito)
 
 @app.route('/')
 def hello_world():
