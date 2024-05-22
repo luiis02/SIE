@@ -28,7 +28,5 @@ def login():
             print("Usuario o contraseña incorrectos")
     return send_from_directory('static', 'login.html')
 
-
-
 if __name__ == '__main__':
     app.run(debug=True)
