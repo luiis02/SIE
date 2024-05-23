@@ -11,7 +11,7 @@ app.secret_key = 'sie'
 def index():
     if 'username' in session:
         print(session['username'])
-        return send_from_directory('static', 'index.html')
+        return render_template('index.html')
     return redirect(url_for('login'))
 
 
@@ -26,7 +26,7 @@ def login():
             return jsonify({"message": "Login successful", "username": "ok"})
         else:
             print("Usuario o contraseña incorrectos")
-    return send_from_directory('static', 'login.html')
+    return send_from_directory('templates', 'login.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
