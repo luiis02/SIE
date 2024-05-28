@@ -5,6 +5,7 @@ from bd import DatabaseController
 
 app = Flask(__name__)
 app.register_blueprint(carrito)
+app.register_blueprint(catalogo)
 app.secret_key = 'sie'  
 
 @app.route('/')

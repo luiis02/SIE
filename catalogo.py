@@ -1,7 +1,11 @@
 from flask import Blueprint
-
+from bd import DatabaseController
 catalogo = Blueprint('catalogo', __name__)
 
 @catalogo.route('/catalogo')
 def otra_ruta():
-    return 'ESTA SERÍA LA PÁGINA DEL CATALOGO!'
+    db = DatabaseController()
+    db.connect()
+    result = db.fetch_data("INVENTARIO")
+    db.close()
+    return str(result)
