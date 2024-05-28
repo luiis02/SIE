@@ -9,7 +9,11 @@ def otra_ruta():
         return redirect(url_for('login'))
     db = DatabaseController()
     db.connect()
-    result = db.fetch_data("INVENTARIO")
+    result = db.fetch_data("INVENTARIO where Stock > 0")
     db.close()
-    return render_template('index.html', result=result)
+    
+    print(result)
+    return render_template('index.html', products=result)
     return str(result)
+
+
