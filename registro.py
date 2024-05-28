@@ -1,7 +1,7 @@
-from flask import Blueprint
-
+from flask import Flask, Blueprint, redirect, url_for, request, render_template, send_file, send_from_directory, session, jsonify
+from bd import DatabaseController
 registro = Blueprint('registro', __name__)
 
 @registro.route('/registro')
 def register():
-    return 'ESTA SERÍA LA PÁGINA DEL REGISTRO!'
+    return render_template('registro.html')

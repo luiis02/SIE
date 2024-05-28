@@ -47,4 +47,3 @@ class DatabaseController:
         if self.connection:
             self.connection.close()
             print("Conexión cerrada correctamente")
-
