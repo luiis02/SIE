@@ -157,7 +157,7 @@
         <section class="product-list" id="product-list">
             {% for product in products %}
             <div class="product">
-                <img src="{{ product[0] }}.jpg" alt="Producto 1">
+                <img src="/static/img/{{ product[0] }}.webp" alt="Producto 1">
                 <h2>{{ product[1] }}</h2>
                 <p class="price">{{ product[5] }} €</p>
                 <button onclick="carrito({{ product[0] }})">Añadir al carrito</button>

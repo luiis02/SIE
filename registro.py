@@ -14,19 +14,24 @@ def register():
         telefono = request.form['telefono']
         metodo_pago = request.form['metodo_pago']
         suscripcion = request.form['suscripcion']
-        
+        print(username)
+        print(password)
         db = DatabaseController()
         db.connect()
-        db.insert_data("usuarios", {
-            "username": username,
-            "password": password,
-            "nombre": nombre,
-            "apellidos": apellidos,
-            "email": email,
-            "telefono": telefono,
-            "metodo_pago": metodo_pago,
-            "suscripcion": suscripcion
-        })
+        todos = db.fetch_data("CLIENTE")
+        cod = len(todos)+1
+        print(cod)
+        db.insert_data("CLIENTE", [
+             cod,
+             username,
+            password,
+             nombre,
+             apellidos,
+             email,
+             telefono,
+             metodo_pago,
+             suscripcion
+        ])
         db.close()
         
         session['username'] = username
