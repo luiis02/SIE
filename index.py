@@ -23,8 +23,8 @@ def login():
     if request.method == 'POST':        
         bd = DatabaseController()
         bd.connect()
-        print (bd.fetch_data("usuarios where email = '%s' and password = '%s'" % (request.get_json().get('username'), request.get_json().get('password'))))
-        if bd.fetch_data("usuarios where email = '%s' and password = '%s'" % (request.get_json().get('username'), request.get_json().get('password'))):
+        print (bd.fetch_data("CLIENTE where email = '%s' and contraseña = '%s'" % (request.get_json().get('username'), request.get_json().get('password'))))
+        if bd.fetch_data("CLIENTE where email = '%s' and contraseña = '%s'" % (request.get_json().get('username'), request.get_json().get('password'))):
             session['username'] = request.get_json().get('username')
             return jsonify({"message": "Login successful", "username": "ok"})
         else:
