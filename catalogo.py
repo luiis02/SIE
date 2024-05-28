@@ -13,5 +13,4 @@ def otra_ruta():
     db.close()
     print(result)
     return render_template('index.html', products=result)
-    return str(result)
 

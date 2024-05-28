@@ -13,9 +13,9 @@ app.secret_key = 'sie'
 @app.route('/')
 def index():
     if 'username' in session:
-        print(session['username'])
         return redirect(url_for('catalogo.otra_ruta'))
-    return redirect(url_for('login'))
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -29,7 +29,7 @@ def login():
             return jsonify({"message": "Login successful", "username": "ok"})
         else:
             print("Usuario o contraseña incorrectos")
-    return send_from_directory('templates', 'login.html')
+    return render_template('login.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
