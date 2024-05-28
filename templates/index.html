@@ -124,7 +124,6 @@
             color: #fff;
             text-align: center;
             padding: 1rem 0;
-            position: fixed;
             width: 100%;
             bottom: 0;
         }
@@ -167,7 +166,10 @@
                 <img src="/static/img/{{ product[0] }}.webp" alt="Producto 1">
                 <h2>{{ product[1] }}</h2>
                 <p class="price">{{ product[5] }} €</p>
-                <button onclick="carrito({{ product[0] }})">Añadir al carrito</button>
+                <form action="/add_carrito" method="POST">
+                    <input type="hidden" name="product_id" value="{{ product[0] }}">
+                    <button type="submit">Añadir al carrito</button>
+                </form>
             </div>
             {% endfor %}
 

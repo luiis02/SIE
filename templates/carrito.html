@@ -68,6 +68,7 @@
             flex-wrap: wrap;
             justify-content: space-around;
             gap: 2rem;
+            flex-direction: column;
         }
 
         .product {
@@ -123,13 +124,71 @@
             color: #fff;
             text-align: center;
             padding: 1rem 0;
-            position: fixed;
             width: 100%;
             bottom: 0;
         }
 
         .filtro {
             display: none;
+        }
+
+        .prod-carrito {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .img-carrito {
+            flex: 1;
+        }
+
+        .img-carrito img {
+            height: 10vh;
+        }
+
+        .tit-carrito {
+            flex: 2;
+            font-size: 1.2em;
+            margin-left: 10px;
+        }
+
+        .precio-carrito {
+            flex: 1;
+            text-align: center;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .unid-carrito {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .unid-carrito button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .unid-carrito button:hover {
+            background-color: #0056b3;
+        }
+
+        .unid-carrito-detail {
+            margin: 0 10px;
+            font-size: 1.2em;
+        }
+
+        .preciototal {
+            font-size: 1.5em;
+            text-align: right;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -161,14 +220,59 @@
     </header>
     <main>
         <section class="product-list" id="product-list">
-            {% for product in products %}
-            <div class="product">
-                <img src="/static/img/{{ product[0] }}.webp" alt="Producto 1">
-                <h2>{{ product[1] }}</h2>
-                <p class="price">{{ product[5] }} €</p>
-                <button onclick="carrito({{ product[0] }})">Añadir al carrito</button>
+            {% for product in productos %}
+            <div class="prod-carrito">
+                <div class="img-carrito">
+                    <img src="/static/img/{{ product[0] }}.webp" alt="">
+                </div>
+                <div class="tit-carrito">{{ product[1] }}</div>
+                <div class="precio-carrito">{{ product[2] }}€</div>
+                <div class="unid-carrito">
+                    <button class="increment">+</button>
+                    <p class="unid-carrito-detail">1</p>
+                    <button class="decrement">-</button>
+                </div>
             </div>
             {% endfor %}
+
+            <div class="preciototal">Total: <span id="total">0</span>€</div>
+
+            <script>
+                function calcularTotal() {
+                    let total = 0;
+                    document.querySelectorAll('.prod-carrito').forEach(function (prodCarrito) {
+                        let precioText = prodCarrito.querySelector('.precio-carrito').textContent;
+                        let precio = parseFloat(precioText.replace('€', ''));
+                        let cantidad = parseInt(prodCarrito.querySelector('.unid-carrito-detail').textContent);
+                        total += precio * cantidad;
+                    });
+                    document.getElementById('total').textContent = total.toFixed(2);
+                }
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    calcularTotal();
+
+                    document.querySelectorAll('.increment').forEach(function (button) {
+                        button.addEventListener('click', function () {
+                            let cantidadElement = this.nextElementSibling;
+                            let cantidad = parseInt(cantidadElement.textContent);
+                            cantidadElement.textContent = cantidad + 1;
+                            calcularTotal();
+                        });
+                    });
+
+                    document.querySelectorAll('.decrement').forEach(function (button) {
+                        button.addEventListener('click', function () {
+                            let cantidadElement = this.previousElementSibling;
+                            let cantidad = parseInt(cantidadElement.textContent);
+                            if (cantidad > 1) {
+                                cantidadElement.textContent = cantidad - 1;
+                                calcularTotal();
+                            }
+                        });
+                    });
+                });
+            </script>
 
         </section>
     </main>

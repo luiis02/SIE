@@ -1,9 +1,37 @@
 from flask import Flask, Blueprint, redirect, url_for, request, render_template, send_file, send_from_directory, session, jsonify
-
+from bd import DatabaseController
 carrito = Blueprint('carrito', __name__)
 
 @carrito.route('/carrito')
 def otra_ruta2():
     if 'username' not in session:
         return redirect(url_for('login'))
-    return render_template('carrito.html')
+    bd = DatabaseController()
+    bd.connect()
+    user_id = bd.fetch_data('CLIENTE where Email = "%s"' % session['username'],)[0][0]
+    carrito = bd.fetch_data('CARRITO where CodCliente = "%s"' % user_id)
+    print(carrito)
+    productos = []
+    for prod in carrito:
+        producto = bd.fetch_data('INVENTARIO WHERE Codigo_producto = %s' % prod[1])
+        print(producto)
+        if producto:
+            productos.append(producto[0])   
+
+    bd.close()
+    return render_template('carrito.html', carrito=carrito, productos=productos)
+@carrito.route('/add_carrito', methods=['POST'])
+def add_carrito():
+    product_id = request.form['product_id']
+    bd = DatabaseController()
+    bd.connect()
+    print(bd.fetch_data('CLIENTE where Email = "%s"' % session['username'],))
+    user_id = bd.fetch_data('CLIENTE where Email = "%s"' % session['username'],)[0][0]
+    print(bd.fetch_data('INVENTARIO where Codigo_producto = "%s"' % product_id,))
+    precio_prod = bd.fetch_data('INVENTARIO where Codigo_producto = "%s"' % product_id,)[0][5]
+    bd.insert_data('CARRITO', [user_id, product_id,1,0,precio_prod])
+    print(user_id)  
+    bd.close()
+    print(f"Usuario: {session['username']}")
+    print(f"Producto añadido al carrito: {product_id}")
+    return jsonify({"message": "Producto añadido al carrito"})
