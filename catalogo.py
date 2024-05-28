@@ -11,9 +11,7 @@ def otra_ruta():
     db.connect()
     result = db.fetch_data("INVENTARIO where Stock > 0")
     db.close()
-    
     print(result)
     return render_template('index.html', products=result)
     return str(result)
-
 

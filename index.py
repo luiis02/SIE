@@ -14,7 +14,7 @@ app.secret_key = 'sie'
 def index():
     if 'username' in session:
         print(session['username'])
-        return render_template('index.html')
+        return redirect(url_for('catalogo.otra_ruta'))
     return redirect(url_for('login'))
 
 
