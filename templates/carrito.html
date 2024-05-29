@@ -221,19 +221,26 @@
     <main>
         <section class="product-list" id="product-list">
             {% for product in productos %}
-            <div class="prod-carrito">
-                <div class="img-carrito">
-                    <img src="/static/img/{{ product[0] }}.webp" alt="">
-                </div>
-                <div class="tit-carrito">{{ product[1] }}</div>
-                <div class="precio-carrito">{{ product[2] }}€</div>
-                <div class="unid-carrito">
-                    <button class="increment">+</button>
-                    <p class="unid-carrito-detail">1</p>
-                    <button class="decrement">-</button>
-                </div>
-            </div>
-            {% endfor %}
+    <div class="prod-carrito">
+        <div class="img-carrito">
+            <img src="/static/img/{{ product.0 }}.webp" alt="">
+        </div>
+        <div class="tit-carrito">{{ product.1 }}</div>
+        <div class="precio-carrito">{{ product.2 }}€</div>
+        <div class="unid-carrito">
+            <button class="decrement" onclick="restacant('{{ product.0 }}')">-</button>
+            <p class="unid-carrito-detail" id="cant-prod-{{ product.0 }}">
+                {% for elem in carrito %}
+                    {% if elem.1 == product.0 %}
+                        {{ elem.2 }}
+                    {% endif %}
+                {% endfor %}
+            </p>
+            <button class="increment" onclick="aniadecant('{{ product.0 }}')">+</button>
+        </div>
+    </div>
+{% endfor %}
+
 
             <div class="preciototal">Total: <span id="total">0</span>€</div>
 
@@ -248,30 +255,62 @@
                     });
                     document.getElementById('total').textContent = total.toFixed(2);
                 }
+                function restacant(productId) {
+                    var cantidadElem = document.getElementById('cant-prod-' + productId);
+                    var cantidad = parseInt(cantidadElem.innerText);
+                    cantidad -= 1;
+                    cantidadElem.innerText = cantidad;
+                    fetch('/update-product-quantity', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            productId: productId,
+                            cantidad: cantidad
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+
+                    calcularTotal();    
+                }
+
+                function aniadecant(productId) {
+                    var cantidadElem = document.getElementById('cant-prod-' + productId);
+                    var cantidad = parseInt(cantidadElem.innerText);
+                    cantidad += 1;
+                    cantidadElem.innerText = cantidad;
+                    fetch('/update-product-quantity', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            productId: productId,
+                            cantidad: cantidad
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                    calcularTotal();
+                }
 
                 document.addEventListener('DOMContentLoaded', function () {
                     calcularTotal();
-
-                    document.querySelectorAll('.increment').forEach(function (button) {
-                        button.addEventListener('click', function () {
-                            let cantidadElement = this.nextElementSibling;
-                            let cantidad = parseInt(cantidadElement.textContent);
-                            cantidadElement.textContent = cantidad + 1;
-                            calcularTotal();
-                        });
-                    });
-
-                    document.querySelectorAll('.decrement').forEach(function (button) {
-                        button.addEventListener('click', function () {
-                            let cantidadElement = this.previousElementSibling;
-                            let cantidad = parseInt(cantidadElement.textContent);
-                            if (cantidad > 1) {
-                                cantidadElement.textContent = cantidad - 1;
-                                calcularTotal();
-                            }
-                        });
-                    });
                 });
+
+
             </script>
 
         </section>

@@ -35,3 +35,25 @@ def add_carrito():
     print(f"Usuario: {session['username']}")
     print(f"Producto añadido al carrito: {product_id}")
     return jsonify({"message": "Producto añadido al carrito"})
+
+
+@carrito.route('/update-product-quantity', methods=['POST'])
+def update_product_quantity():
+    data = request.get_json()
+    product_id = data['productId']
+    cantidad = data['cantidad']
+    bd = DatabaseController()
+    bd.connect()
+    user_id = bd.fetch_data('CLIENTE where Email = "%s"' % session['username'],)[0][0]
+    if cantidad < 1:
+        bd.cursor.execute(f"DELETE FROM CARRITO WHERE CodCliente = {user_id} AND CodProd = {product_id}")
+    else:
+        bd.cursor.execute(f"UPDATE CARRITO SET Cantidad = {cantidad} WHERE CodCliente = {user_id} AND CodProd = {product_id}")
+    bd.connection.commit()
+    bd.close()
+    response = {
+        'productId': product_id,
+        'cantidad': cantidad,
+        'status': 'success'
+    }
+    return jsonify(response)
