@@ -2,12 +2,18 @@ from flask import Flask, Blueprint, redirect, url_for, request, render_template,
 from carrito import carrito
 from catalogo import catalogo
 from registro import registro
+from contacto import contacto
+from atencion_cliente import atencion_cliente
 from bd import DatabaseController
 
 app = Flask(__name__)
 app.register_blueprint(carrito)
 app.register_blueprint(catalogo)
 app.register_blueprint(registro)
+app.register_blueprint(contacto)
+app.register_blueprint(atencion_cliente)
+
+
 app.secret_key = 'sie'  
 
 @app.route('/')

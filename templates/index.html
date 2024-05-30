@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Productos</title>
-    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles.css') }}"> -->
     <style>
         * {
             margin: 0;
@@ -128,6 +127,20 @@
             bottom: 0;
         }
 
+        .footer-links {
+            margin: 1rem 0;
+        }
+
+        .footer-links a {
+            color: #fff;
+            margin: 0 1rem;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
         .filtro {
             display: none;
         }
@@ -186,6 +199,10 @@
         </section>
     </main>
     <footer>
+        <div class="footer-links">
+            <a href="/contacto">Contacto</a>
+            <a href="/atencion_cliente">Atención al Cliente</a>
+        </div>
         <p>&copy; 2024 Catálogo de Productos. Todos los derechos reservados.</p>
     </footer>
     <script>
