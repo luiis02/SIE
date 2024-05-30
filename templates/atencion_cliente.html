@@ -44,6 +44,7 @@
 
         h2 {
             color: #8d3b3b;
+            text-align: center;
         }
 
         .faq {
@@ -57,6 +58,38 @@
 
         .faq p {
             margin-top: 0.5rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 1rem;
+        }
+
+        input,
+        textarea {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 0.5rem;
+        }
+
+        button {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background-color: #8d3b3b;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #d35400;
         }
 
         footer {
@@ -73,7 +106,7 @@
     <header>
         <div id="logo">
             <a href="/catalogo">
-                <img src="/static/img/logo.jpeg" alt="Logo">
+                <img src="{{ url_for('static', filename='img/logo.jpeg') }}" alt="Logo">
             </a>
         </div>
         <h1>Atención al Cliente</h1>
@@ -103,7 +136,7 @@
             <p>Sí, realizamos envíos a varios países. Consulta nuestra página de envíos internacionales para más información.</p>
 
             <h3>8. ¿Cómo puedo contactar con atención al cliente?</h3>
-            <p>Puedes contactarnos a través de nuestra página de contacto o enviando un correo a soporte@elduque.com.</p>
+            <p>Puedes contactarnos a través de nuestra página de contacto o enviando un correo a soporte@tuempresa.com.</p>
 
             <h3>9. ¿Puedo cancelar mi pedido?</h3>
             <p>Sí, puedes cancelar tu pedido antes de que sea enviado. Contáctanos lo antes posible para proceder con la cancelación.</p>
@@ -111,10 +144,33 @@
             <h3>10. ¿Tienen algún programa de fidelización?</h3>
             <p>Sí, ofrecemos un programa de fidelización para nuestros clientes. Regístrate en nuestra página para obtener más información.</p>
         </div>
+        <h2>Envíanos tu consulta</h2>
+        <form id="consultaForm" method="post" action="{{ url_for('atencion_cliente.enviar_consulta') }}">
+            <label for="nombre"><strong> Nombre: </strong> </label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <label for="email"><strong> Correo Electrónico: </strong> </label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="mensaje"><strong> Mensaje: </strong> </label>
+            <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
+
+            <button type="submit">Enviar</button>
+        </form>
     </main>
     <footer>
         <p>&copy; 2024 Catálogo de Productos. Todos los derechos reservados.</p>
     </footer>
+    <script>
+        document.getElementById('consultaForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            const mensaje = document.getElementById('mensaje').value;
+            const whatsappUrl = 'https://wa.link/5drjts?text=${encodeURIComponent('Nombre: ${nombre}\nEmail: ${email}\nMensaje: ${mensaje}')}';
+            window.location.href = whatsappUrl;
+        });
+    </script>
 </body>
 
 </html>
