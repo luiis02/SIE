@@ -42,7 +42,7 @@ class DatabaseController:
         except sqlite3.Error as e:
             print(f"Error al obtener datos de la tabla {table_name}: {e}")
             return None
-
+    
     def close(self):
         if self.connection:
             self.connection.close()

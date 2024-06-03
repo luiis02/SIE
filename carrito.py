@@ -1,5 +1,6 @@
 from flask import Flask, Blueprint, redirect, url_for, request, render_template, send_file, send_from_directory, session, jsonify
 from bd import DatabaseController
+import random   
 carrito = Blueprint('carrito', __name__)
 
 @carrito.route('/carrito')
@@ -57,3 +58,24 @@ def update_product_quantity():
         'status': 'success'
     }
     redirect('/catalogo')
+
+@carrito.route('/finalizar_compra', methods=['POST'])
+def finalizar_compra():
+    bd = DatabaseController()
+    bd.connect()
+    user_id = bd.fetch_data('CLIENTE where Email = "%s"' % session['username'],)[0][0]
+    try:
+        n_factura = bd.fetch_data('FACTURAS',)[0][0] + 1
+        n_factura = len(n_factura)+1
+    except:
+        n_factura = random.randint(1, 1000000000000)
+    carrito = bd.fetch_data('CARRITO where CodCliente = "%s"' % user_id)
+    print(carrito)
+    print(user_id)
+    bd.insert_data('FACTURAS', [n_factura, '00/00/00' , '21', user_id, 'FF00DWS'])
+    for prod in carrito:
+        bd.insert_data('PEDIDOS', [n_factura, prod[1], user_id, prod[4] * prod[2], '', 'Iniciado', ''])
+        bd.cursor.execute(f"DELETE FROM CARRITO WHERE CodCliente = {user_id}")
+    bd.connection.commit()
+    bd.close()
+    return jsonify({'status': 'success'})

@@ -342,7 +342,7 @@
                     calcularTotal();
                 });
             </script>
-            <button class="button" type="submit">Realizar compra</button>
+            <button class="button" type="submit" onclick="realizarCompra()">Realizar compra</button>
         </section>
     </main>
     <footer>
@@ -362,6 +362,26 @@
             }
 
         })
+        function realizarCompra() {
+    fetch('finalizar_compra', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la respuesta del servidor');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert('Compra realizada con éxito');
+    })
+    .catch((error) => {
+        alert('Error en la compra. Prueba más tarde');
+    });
+}
     </script>
 </body>
 
