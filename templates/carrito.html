@@ -128,6 +128,38 @@
             bottom: 0;
         }
 
+        /* Estilos básicos del botón */
+        .button {
+            background-color: #667dc4;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition-duration: 0.4s;
+        }
+
+        .button:hover {
+            background-color: white;
+            color: black;
+            border: 2px solid #667dc4;
+        }
+
+
+        .button:active {
+            background-color: #667dc4;
+            color: white;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+
+        }
+
+
         .filtro {
             display: none;
         }
@@ -221,25 +253,25 @@
     <main>
         <section class="product-list" id="product-list">
             {% for product in productos %}
-    <div class="prod-carrito">
-        <div class="img-carrito">
-            <img src="/static/img/{{ product.0 }}.webp" alt="">
-        </div>
-        <div class="tit-carrito">{{ product.1 }}</div>
-        <div class="precio-carrito">{{ product.2 }}€</div>
-        <div class="unid-carrito">
-            <button class="decrement" onclick="restacant('{{ product.0 }}')">-</button>
-            <p class="unid-carrito-detail" id="cant-prod-{{ product.0 }}">
-                {% for elem in carrito %}
-                    {% if elem.1 == product.0 %}
+            <div class="prod-carrito">
+                <div class="img-carrito">
+                    <img src="/static/img/{{ product.0 }}.webp" alt="">
+                </div>
+                <div class="tit-carrito">{{ product.1 }}</div>
+                <div class="precio-carrito">{{ product.2 }}€</div>
+                <div class="unid-carrito">
+                    <button class="decrement" onclick="restacant('{{ product.0 }}')">-</button>
+                    <p class="unid-carrito-detail" id="cant-prod-{{ product.0 }}">
+                        {% for elem in carrito %}
+                        {% if elem.1 == product.0 %}
                         {{ elem.2 }}
-                    {% endif %}
-                {% endfor %}
-            </p>
-            <button class="increment" onclick="aniadecant('{{ product.0 }}')">+</button>
-        </div>
-    </div>
-{% endfor %}
+                        {% endif %}
+                        {% endfor %}
+                    </p>
+                    <button class="increment" onclick="aniadecant('{{ product.0 }}')">+</button>
+                </div>
+            </div>
+            {% endfor %}
 
 
             <div class="preciototal">Total: <span id="total">0</span>€</div>
@@ -270,15 +302,15 @@
                             cantidad: cantidad
                         })
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Success:', data);
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Success:', data);
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
 
-                    calcularTotal();    
+                    calcularTotal();
                 }
 
                 function aniadecant(productId) {
@@ -296,23 +328,21 @@
                             cantidad: cantidad
                         })
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Success:', data);
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Success:', data);
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
                     calcularTotal();
                 }
 
                 document.addEventListener('DOMContentLoaded', function () {
                     calcularTotal();
                 });
-
-
             </script>
-
+            <button class="button" type="submit">Realizar compra</button>
         </section>
     </main>
     <footer>
