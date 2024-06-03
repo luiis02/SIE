@@ -56,8 +56,4 @@ def update_product_quantity():
         'cantidad': cantidad,
         'status': 'success'
     }
-<<<<<<< HEAD
-    return jsonify(response)
-=======
     redirect('/catalogo')
->>>>>>> 05e110a00d64d7bfa448c998ffbdf6ae5b94ddfe
