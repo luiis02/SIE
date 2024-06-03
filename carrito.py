@@ -34,7 +34,7 @@ def add_carrito():
     bd.close()
     print(f"Usuario: {session['username']}")
     print(f"Producto añadido al carrito: {product_id}")
-    return jsonify({"message": "Producto añadido al carrito"})
+    return redirect('/catalogo')
 
 
 @carrito.route('/update-product-quantity', methods=['POST'])
@@ -56,4 +56,4 @@ def update_product_quantity():
         'cantidad': cantidad,
         'status': 'success'
     }
-    return jsonify(response)
+    redirect('/catalogo')
